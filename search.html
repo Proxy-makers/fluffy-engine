@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini DuckDuckGo Browser</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+    #controls {
+        margin: 10px;
+    }
+    input[type="text"] {
+        padding: 10px;
+        width: 400px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 5px;
+    }
+    button {
+        padding: 10px 15px;
+        border: none;
+        background-color: #5a9;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #48a;
+    }
+    iframe {
+        width: 90%;
+        height: 80%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Mini Browser</h1>
+<div id="controls">
+    <input type="text" id="urlInput" placeholder="Enter URL or search term">
+    <button onclick="go()">Go</button>
+</div>
+
+<iframe id="browserFrame" src="https://duckduckgo.com"></iframe>
+
+<script>
+function go() {
+    const input = document.getElementById('urlInput').value.trim();
+    let url = "";
+
+    if (!input) return;
+
+    // Check if input looks like a full URL
+    if (input.startsWith("http://") || input.startsWith("https://")) {
+        url = input;
+    } else if (input.includes(".")) {
+        // assume it’s a website if it has a dot
+        url = "https://" + input;
+    } else {
+        // otherwise, treat it as a search query
+        url = "https://duckduckgo.com/?q=" + encodeURIComponent(input);
+    }
+
+    document.getElementById('browserFrame').src = url;
+}
+
+// Optional: press Enter to go
+document.getElementById('urlInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        go();
+    }
+});
+</script>
+
+</body>
+</html>
